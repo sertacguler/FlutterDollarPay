@@ -1,3 +1,5 @@
+import 'package:dollar_pay/components/AppButtons.dart';
+import 'package:dollar_pay/constant/colors.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -21,9 +23,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
-
   final String title;
-
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -31,9 +31,25 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    final double width = MediaQuery.of(context).size.width;
+    final double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 50),
+        child: AppButtons(
+          textColor: Colors.white,
+          backgroundColor: appColor.redRadish,
+          borderColor: appColor.redRadish,
+          text: "Hi guys",
+          borderRadius: 50,
+          width: width * 0.8,
+          height: 50,
+          iconData: Icons.qr_code,
+          isIcon: true,
+        ),
       ),
     );
   }
