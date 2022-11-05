@@ -1,5 +1,7 @@
 import 'package:dollar_pay/components/AppButtons.dart';
 import 'package:dollar_pay/components/YourLocations.dart';
+import 'package:dollar_pay/components/PhotoBuilder.dart';
+
 import 'package:dollar_pay/constant/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
+
       body: YourLocations(screenHeight:height ,screenWidth:width, subTitle: 'Ülke | İl', title: 'Location #1' ,)     
      /*  Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),
