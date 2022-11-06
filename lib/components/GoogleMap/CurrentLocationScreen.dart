@@ -44,7 +44,7 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
               infoWindow: const InfoWindow(title: 'New Place'),
               icon: await BitmapDescriptor.fromAssetImage(
                 const ImageConfiguration(),
-                'assets/icon/marker.png',
+                'assets/icons/marker.png',
               ),
             );
             setState(() {
