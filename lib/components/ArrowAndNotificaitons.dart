@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ArrowAndNotifications extends StatelessWidget {
@@ -19,7 +18,7 @@ class ArrowAndNotifications extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           IconButton(
-              onPressed: null,
+              onPressed: () => Navigator.of(context).pop(false),
               icon: Icon(
                 Icons.arrow_back,
                 color: Colors.black,
