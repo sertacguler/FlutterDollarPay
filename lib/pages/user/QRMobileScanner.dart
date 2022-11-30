@@ -14,6 +14,7 @@ class QRMobileScanner extends StatelessWidget {
         children: [
           MobileScanner(
               allowDuplicates: false,
+              controller: MobileScannerController(),
               onDetect: (barcode, args) {
                 if (barcode.rawValue == null) {
                   print('Failed to scan Barcode');
@@ -21,6 +22,7 @@ class QRMobileScanner extends StatelessWidget {
                   rawValue = barcode.rawValue!;
                   if (rawValue.contains('dollarpay')) {
                     print('value rawValue : $rawValue');
+                    Navigator.pop(context, rawValue);
                   } else {
                     print('not our qr -> value rawValue : $rawValue');
                   }

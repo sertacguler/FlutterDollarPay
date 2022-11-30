@@ -1,0 +1,1 @@
+enum DialogAction { yes, abort }

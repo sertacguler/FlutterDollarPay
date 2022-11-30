@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dollar_pay/constant/colors.dart';
+import 'package:get/get.dart';
 
 class QRScannerOverlay extends StatelessWidget {
   const QRScannerOverlay({Key? key, required this.overlayColour})
@@ -20,7 +22,7 @@ class QRScannerOverlay extends StatelessWidget {
           children: [
             Container(
               decoration: const BoxDecoration(
-                  color: Colors.red,
+                  color: appColor.redRadish,
                   backgroundBlendMode: BlendMode
                       .dstOut), // This one will handle background + difference out
             ),
@@ -30,12 +32,42 @@ class QRScannerOverlay extends StatelessWidget {
                 height: scanArea,
                 width: scanArea,
                 decoration: BoxDecoration(
-                  color: Colors.red,
+                  color: appColor.redRadish,
                   borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
           ],
+        ),
+      ),
+      GestureDetector(
+        onTap: () {
+          Navigator.pop(context, "");
+        },
+        child: Container(
+          padding: EdgeInsets.only(left: 20, top: 60),
+          child: FutureBuilder(
+            builder: (context, snapshot) {
+              return const Icon(
+                Icons.close,
+                color: appColor.qrGray,
+                size: 40,
+              );
+            },
+          ),
+        ),
+      ),
+      Container(
+        alignment: Alignment.topCenter,
+        padding: EdgeInsets.only(top: 70),
+        child: FutureBuilder(
+          builder: (context, snapshot) {
+            return const Text(
+              "Scan QR Code",
+              style: TextStyle(color: appColor.white, fontSize: 16),
+              textAlign: TextAlign.center,
+            );
+          },
         ),
       ),
       Align(
@@ -48,7 +80,48 @@ class QRScannerOverlay extends StatelessWidget {
           ),
         ),
       ),
+      Container(
+        alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.only(bottom: 140),
+        child: FutureBuilder(
+          builder: (context, snapshot) {
+            return scanningQRcode();
+          },
+        ),
+      ),
     ]);
+  }
+
+  SizedBox scanningQRcode() {
+    return SizedBox(
+      width: 200.0,
+      height: 40.0,
+      child: Card(
+        elevation: 0,
+        color: appColor.qrGrayBg,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(80),
+          side: BorderSide(
+            color: appColor.qrGrayborder,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.qr_code_scanner_rounded,
+              color: appColor.qrGray,
+            ),
+            Padding(padding: EdgeInsets.only(right: 10)),
+            Text(
+              "Scanning QR Code...",
+              style: TextStyle(color: appColor.qrGray, fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -101,7 +174,7 @@ class BorderPainter extends CustomPainter {
     canvas.drawRRect(
       rrect,
       Paint()
-        ..color = Colors.white
+        ..color = appColor.qrGray
         ..style = PaintingStyle.stroke
         ..strokeWidth = width,
     );

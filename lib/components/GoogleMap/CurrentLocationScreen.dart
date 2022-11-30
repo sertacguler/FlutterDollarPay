@@ -1,6 +1,10 @@
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../Dialog/DialogActionsEnum.dart';
+import '../Dialog/ShowDialog.dart';
 
 class CurrentLocationScreen extends StatefulWidget {
   const CurrentLocationScreen({Key? key}) : super(key: key);
@@ -26,6 +30,8 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
     super.initState();
   }
 
+  bool tappedYes = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,14 +45,24 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
           onTap: (LatLng latLng) async {
             print('LatLng value: ${latLng.latitude}, ${latLng.longitude}');
             Marker newMarker = Marker(
-              markerId: MarkerId(latLng.toString()),
-              position: LatLng(latLng.latitude, latLng.longitude),
-              infoWindow: const InfoWindow(title: 'New Place'),
-              icon: await BitmapDescriptor.fromAssetImage(
-                const ImageConfiguration(),
-                'assets/icons/marker.png',
-              ),
-            );
+                markerId: MarkerId(latLng.toString()),
+                position: LatLng(latLng.latitude, latLng.longitude),
+                infoWindow: const InfoWindow(title: 'New Place'),
+                icon: await getBitmapDescriptorFromSVGAsset(context,
+                    'assets/svg/GreenMarker.svg' /*'assets/svg/RedMarker.svg'*/),
+                onTap: () async {
+                  final action = await Dialogs.dialog(
+                      context, // Context
+                      '', // Title
+                      'Shell will be added to your locations', // Content
+                      'Yes, add this location', // firstButton
+                      'Cancel'); // secondButton
+                  if (action == DialogAction.yes) {
+                    setState(() => tappedYes = true);
+                  } else {
+                    setState(() => tappedYes = false);
+                  }
+                });
             setState(() {
               markers.add(newMarker);
             });
@@ -100,6 +116,33 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
 
     return position;
   }
+}
+
+Future<BitmapDescriptor> getBitmapDescriptorFromSVGAsset(
+  BuildContext context,
+  String svgAssetLink, {
+  Size size = const Size(30, 30),
+}) async {
+  String svgString = await DefaultAssetBundle.of(context).loadString(
+    svgAssetLink,
+  );
+  final drawableRoot = await svg.fromSvgString(
+    svgString,
+    'debug: $svgAssetLink',
+  );
+  final ratio = ui.window.devicePixelRatio.ceil();
+  final width = size.width.ceil() * ratio;
+  final height = size.height.ceil() * ratio;
+  final picture = drawableRoot.toPicture(
+    size: Size(
+      width.toDouble(),
+      height.toDouble(),
+    ),
+  );
+  final image = await picture.toImage(width, height);
+  final byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  final uInt8List = byteData!.buffer.asUint8List();
+  return BitmapDescriptor.fromBytes(uInt8List);
 }
 
 // HowToUseGoogleMap ->  CurrentLocationScreen()

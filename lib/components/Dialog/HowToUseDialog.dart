@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'DialogActionsEnum.dart';
 import 'package:dollar_pay/components/Dialog/ShowDialog.dart';
 
 class HowToUseDialog extends StatelessWidget {
